@@ -42,12 +42,12 @@ layer {
     }
   }
 }
-layer {
-  name: "relu1"
-  type: "ReLU"
-  bottom: "fc"
-  top: "fc"
-}
+# layer {
+#   name: "relu1"
+#   type: "ReLU"
+#   bottom: "fc"
+#   top: "fc"
+# }
 # layer {
 #   name: "softmax"
 #   type: "Softmax"

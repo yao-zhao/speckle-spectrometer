@@ -1,5 +1,6 @@
 % train discrete net components
-
+clear all
+close all;
 % generate simulated spectra and intensity pair
 datapath = 'data';
 files = dir(fullfile(datapath, '*.mat'));
@@ -16,13 +17,13 @@ for ifile = 1%:length(filenames)
 end
 
 loss=[];
-for name = {'linear', 'cnn'}
+for name = {'linear-single', 'cnn-single'}
     % setup caffe
     addpath('/home/yz/caffe3/matlab');
     modelpath = ['model/',name{1}];
     caffe.reset_all();
     caffe.set_mode_gpu();
-    caffe.set_device(0);
+    caffe.set_device(1);
     
     % load caffe model
     model_def = fullfile(modelpath, 'train.prototxt');
@@ -58,17 +59,29 @@ for name = {'linear', 'cnn'}
         losses(i) = solver.net.blobs('loss').get_data;
     end
     loss=[loss, {losses}];
+    
+    [ img_batch, spectra_batch ] = ...
+        sampleDiscreteSpectra(T, 32);
+    % load data
+    solver.net.blobs('data').set_data(img_batch);
+    solver.net.blobs('label').set_data(spectra_batch);
+    % % plot prediction
+    solver.net.blobs('data').set_data(img_batch);
+    solver.net.blobs('label').set_data(spectra_batch);
+    % forward
+    solver.net.forward_prefilled();
+    output_spectra = solver.net.blobs('fc').get_data();
+    input_spectra = solver.net.blobs('label').get_data();
+    for ipic = 1:10
+        wavelength = 1:size(input_spectra, 1);
+        plot(wavelength, squeeze(input_spectra(:, ipic)),...
+            wavelength, squeeze(output_spectra(:, ipic)));
+        print(fullfile(modelpath, ['demo',num2str(ipic),'.jpg']), '-djpeg');
+    end
+    %
 end
 %%
-% % plot prediction
-solver.net.blobs('data').set_data(img_batch);
-solver.net.blobs('label').set_data(spectra_batch);
-output_spectra = solver.net.blobs('fc').get_data();
-input_spectra = solver.net.blobs('label').get_data();
-wavelength = 1:size(input_spectra, 1);
-plot(wavelength, squeeze(input_spectra(:, 1)),...
-    wavelength, squeeze(output_spectra(:, 1)));
-% 
+
 
 
 

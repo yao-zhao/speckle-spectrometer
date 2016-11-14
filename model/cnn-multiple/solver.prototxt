@@ -1,4 +1,4 @@
-net: "model/linear/train.prototxt"
+net: "model/cnn-multiple/train.prototxt"
 base_lr: 0.1
 display: 10
 max_iter: 6000
@@ -8,7 +8,7 @@ momentum: 0.9
 weight_decay: 0
 stepsize: 2000
 snapshot: 100000
-snapshot_prefix: "model/linear/net"
+snapshot_prefix: "model/cnn-multiple/net"
 solver_mode: GPU
 test_initialization: false
 type: "SGD"

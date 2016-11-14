@@ -32,8 +32,8 @@ solver = caffe.Solver(solver_def);
 % train
 clc
 
-batchsize = 256;
-numsample = 5;
+batchsize = 32;
+numsample = 3;
 
 iter = 6e3;
 losses = zeros(1, iter);

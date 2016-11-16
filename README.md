@@ -6,8 +6,15 @@ using CNN for spectrum reconstruction using all fiber spectromter
 - in multiple line (5 lines) reconstruction, cnn perform similar to linear reconstruction
 
 # facts
-- noise is about 1/10th of the whole mean value.
+- noise is about 1e-3 of the whole mean value.
+
+# control experiments include
+- noise options: yes or no
+- method options: linear, neural net, and optimization
+- spectrum options: single, multiple, and continuous
+- spectrum density: correlated and uncorrelated
 
 # goals of next steps
-- compare with lsq optimization
-- add noise
+- limit the neural net parameters
+- finish control experiments
+- temperature: fixed and sampled

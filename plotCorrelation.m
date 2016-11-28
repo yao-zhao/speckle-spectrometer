@@ -7,8 +7,6 @@ close all;
 datapath = 'data';
 files = dir(fullfile(datapath, '*.mat'));
 filenames = {files.name};
-
-% get one transimission matrix
 legends = [];
 for ifile = 1:length(filenames)
     filename = fullfile(datapath, filenames{ifile});
@@ -19,14 +17,36 @@ for ifile = 1:length(filenames)
     display(['number of pixels ', num2str(size(T,1))])
     display(['number of samplings ', num2str(size(T,2))])
     dl = DataLoader(filename);
-    corr = dl.getCorr(20);
-    plot(1:length(corr), corr);
+    corrW = dl.getWavelengthCorr(20);
+    plot(1:length(corrW), corrW);
     legends = [legends, {strrep(filename, '_', ' ')}];
     hold on;
 end
-xlabel('sampling')
+title('wavelength correlation');
+xlabel('wavelength increments')
 ylabel('correlation')
 legend(legends)
-print('results/correlations.png', '-dpng')
+print('results/wavelength_correlations.png', '-dpng')
 %%
+close all;
+legends = [];
+for ifile = 1:length(filenames)
+    filename = fullfile(datapath, filenames{ifile});
+    [~, label, ~]= fileparts(filenames{ifile});
+    load_data = load(filename);
+    T = load_data.T;
+    display(['filename', filename]);
+    display(['number of pixels ', num2str(size(T,1))])
+    display(['number of samplings ', num2str(size(T,2))])
+    dl = DataLoader(filename);
+    corrW = dl.getPixelCorr(50);
+    plot(1:length(corrW), corrW);
+    legends = [legends, {strrep(filename, '_', ' ')}];
+    hold on;
+end
+title('pixel correlation');
+xlabel('wavelength increments')
+ylabel('correlation')
+legend(legends)
+print('results/pixel_correlations.png', '-dpng')
 

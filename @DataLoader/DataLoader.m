@@ -79,7 +79,7 @@ classdef DataLoader < handle
         end
         
         % show correlation plot
-        function corr = getCorr(obj, maxspan)
+        function corr = getWavelengthCorr(obj, maxspan)
             numP = size(obj.T, 1);
             numW = size(obj.T, 2);
             maxspan = min([numP-1, maxspan]);
@@ -96,6 +96,29 @@ classdef DataLoader < handle
                     ab = ab + m(:, inum).*m(:, inum+span);
                     a2 = a2 + m(:, inum).^2;
                     b2 = b2 + m(:, inum+span).^2;
+                end
+                corr(span) = mean(ab./sqrt(a2)./sqrt(b2));
+            end
+        end
+
+        % get pixel correlation plot
+        function corr = getPixelCorr(obj, maxspan)
+            numP = size(obj.T, 1);
+            numW = size(obj.T, 2);
+            maxspan = min([numP-1, maxspan]);
+            corr = zeros(maxspan, 1);
+            m = obj.T;
+            mm = mean(m, 1);
+            m = m - ones(numP, 1)*mm;
+            for span = 1:maxspan
+                numspans = numW-span;
+                ab = zeros(1, numW);
+                a2 = zeros(1, numW);
+                b2 = zeros(1, numW);
+                for inum = 1:numspans
+                    ab = ab + m(inum, :).*m(inum+span, :);
+                    a2 = a2 + m(inum, :).^2;
+                    b2 = b2 + m(inum+span, :).^2;
                 end
                 corr(span) = mean(ab./sqrt(a2)./sqrt(b2));
             end

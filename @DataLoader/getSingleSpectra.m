@@ -1,7 +1,15 @@
-function [ img_batch, spectra_batch ] = sampleDiscreteSpectra(T, batchsize)
-%get a random combination of discrerete random spectra
+function [ img_batch, spectra_batch ] = getSingleSpectra(obj)
+% sample a single spectra
+% total intensities are normalized to equal to 1
+% input: 
+%   T is the transmission matrix
+%   batchsize is the batchsize
+% output:
+%   img_batch are the images in batch
+%   spectra_batch are the labels in batch
 
-% sample 1
+T = obj.T;
+batchsize = obj.batchsize;
 [numpix, numspec] = size(T);
 
 spectra_batch = zeros(numspec, batchsize);
@@ -14,11 +22,6 @@ for ibatch = 1:batchsize
     img = T*spectra;
     spectra_batch(:, ibatch) = spectra;
     img_batch(1, :, 1, ibatch) = img;
-    
-    %    subplot(1,2,1)
-    %    plot(spectra);
-    %    subplot(1,2,2);
-    %    plot(img);
 end
 
 end

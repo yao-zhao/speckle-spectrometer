@@ -1,6 +1,12 @@
 # spectrometer-cnn
 using CNN for spectrum reconstruction using all fiber spectromter
 
+# analysis stream line
+
+- DataLoader, contains different methods for loading data
+
+- CaffeModel, contains wrapper for training using different caffe models
+
 # results
 - in single line reconstruction, cnn is able to reconstruct sub correlation images with noiseless image
 - in multiple line (5 lines) reconstruction, cnn perform similar to linear reconstruction

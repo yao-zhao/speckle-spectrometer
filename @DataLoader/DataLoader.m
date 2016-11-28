@@ -14,7 +14,7 @@ classdef DataLoader < handle
         noise_option
         batchsize = 256 % batchsize
         % noise parameter
-        gaussian_noise = 0.0001 % gaussian noise
+        gaussian_noise = 1e-3 % gaussian noise
         shot_noise = 0 % shot noise
         % multi splectra parameter
         numlines = 3 % number of lines
@@ -34,6 +34,7 @@ classdef DataLoader < handle
             obj.savepath = fullfile(savepath, obj.name);
             obj.noise_option = obj.noise_options{1};
             obj.spectra_option = obj.spectra_options{2};
+            obj.gaussian_noise = mean(obj.T(:)) * obj.gaussian_noise;
         end
         
         % get spectra
@@ -137,6 +138,7 @@ classdef DataLoader < handle
         % get continous
         [ img_batch, spectra_batch ] = getContinuousSpectra(obj);
         
+
     end
     
 end

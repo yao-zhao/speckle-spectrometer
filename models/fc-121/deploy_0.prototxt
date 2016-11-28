@@ -1,4 +1,4 @@
-name: "fc_121"
+name: "fc-121"
 layer {
   name: "Input1"
   type: "Input"

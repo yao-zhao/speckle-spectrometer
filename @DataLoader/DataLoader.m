@@ -80,22 +80,22 @@ classdef DataLoader < handle
         
         % show correlation plot
         function corr = getCorr(obj, maxspan)
-            numW = size(obj.T, 1);
-            numP = size(obj.T, 2);
-            maxspan = min([numW-1, maxspan]);
+            numP = size(obj.T, 1);
+            numW = size(obj.T, 2);
+            maxspan = min([numP-1, maxspan]);
             corr = zeros(maxspan, 1);
             m = obj.T;
-            mm = mean(m, 1);
-            m = m - ones(numW, 1)*mm;
+            mm = mean(m, 2);
+            m = m - mm * ones(1, numW);
             for span = 1:maxspan
                 numspans = numW-span;
-                ab = zeros(1, numP);
-                a2 = zeros(1, numP);
-                b2 = zeros(1, numP);
+                ab = zeros(numP, 1);
+                a2 = zeros(numP, 1);
+                b2 = zeros(numP, 1);
                 for inum = 1:numspans
-                    ab = ab + m(inum, :).*m(inum+span,:);
-                    a2 = a2 + m(inum, :).^2;
-                    b2 = b2 + m(inum+span,:).^2;
+                    ab = ab + m(:, inum).*m(:, inum+span);
+                    a2 = a2 + m(:, inum).^2;
+                    b2 = b2 + m(:, inum+span).^2;
                 end
                 corr(span) = mean(ab./sqrt(a2)./sqrt(b2));
             end

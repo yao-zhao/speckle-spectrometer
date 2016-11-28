@@ -1,0 +1,55 @@
+name: "conv_7x16_3x24_3x32_fc-401"
+layer {
+  name: "Input1"
+  type: "Input"
+  top: "Input1"
+  input_param {
+    shape {
+      dim: 256
+      dim: 1
+      dim: 2101
+      dim: 1
+    }
+  }
+}
+layer {
+  name: "fc1"
+  type: "InnerProduct"
+  bottom: "Input1"
+  top: "fc1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 1
+  }
+  inner_product_param {
+    num_output: 401
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "Input2"
+  type: "Input"
+  top: "Input2"
+  input_param {
+    shape {
+      dim: 256
+      dim: 401
+    }
+  }
+}
+layer {
+  name: "euclideanloss"
+  type: "EuclideanLoss"
+  bottom: "fc1"
+  bottom: "Input2"
+  top: "euclideanloss"
+  loss_weight: 1
+}

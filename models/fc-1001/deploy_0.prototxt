@@ -1,0 +1,23 @@
+name: "fc-1001"
+layer {
+  name: "Input1"
+  type: "Input"
+  top: "Input1"
+  input_param {
+    shape {
+      dim: 1
+      dim: 1
+      dim: 2101
+      dim: 1
+    }
+  }
+}
+layer {
+  name: "fc1"
+  type: "InnerProduct"
+  bottom: "Input1"
+  top: "fc1"
+  inner_product_param {
+    num_output: 1001
+  }
+}

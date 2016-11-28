@@ -19,7 +19,7 @@ esac
 shift # past argument
 done
 /home/yz/caffe3/build/tools/caffe train -gpu $GPU \
---solver=models/fc_121/solver_0.prototxt \
-2>&1 | tee models/fc_121/log_$REPEAT.txt
-cp models/fc_121/stage_0_iter_60000.caffemodel \
-models/fc_121/stage_0_final_$REPEAT.caffemodel
+--solver=models/fc-121/solver_0.prototxt \
+2>&1 | tee models/fc-121/log_$REPEAT.txt
+cp models/fc-121/stage_0_iter_60000.caffemodel \
+models/fc-121/stage_0_final_$REPEAT.caffemodel

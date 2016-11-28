@@ -1,4 +1,4 @@
-name: "fc_121"
+name: "conv_7x16_3x24_3x32_fc-121"
 layer {
   name: "Input1"
   type: "Input"

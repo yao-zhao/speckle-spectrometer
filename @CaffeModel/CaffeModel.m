@@ -17,7 +17,6 @@ classdef CaffeModel < handle
         
         % constructor
         function obj = CaffeModel(modelname, dataloader)
-            addpath('/home/yz/caffe3/matlab');
             obj.name = modelname;
             caffe.reset_all();
             caffe.set_mode_gpu();

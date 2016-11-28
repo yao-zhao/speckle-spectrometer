@@ -14,7 +14,8 @@ classdef Scheduler < handle
         modelpath = 'models'
         resultpath = 'results'
         % validation parameter
-        num_vals = 32;
+        num_vals = 2;
+        num_displays = 2;
     end
     
     methods
@@ -87,7 +88,6 @@ classdef Scheduler < handle
             files = dir(obj.resultpath);
             files = files([files.isdir]);
             files = files(3:end);
-            caffe.reset_all();
             caffe.set_mode_gpu();
             caffe.set_device(0);
             for ifile = 1:length(files)
@@ -97,6 +97,7 @@ classdef Scheduler < handle
                 traindata = load(fullfile(obj.resultpath, filename, 'training.mat'));
                 dl = traindata.dataloader;
                 dl.batchsize = obj.num_vals;
+                caffe.reset_all();
                 net = caffe.Net(fullfile(obj.modelpath, ....
                     traindata.modelname, 'deploy_0.prototxt'), ...
                     fullfile(obj.resultpath, filename, 'trained.caffemodel'), ...
@@ -121,7 +122,7 @@ classdef Scheduler < handle
                 % plot
                 close all;
                 figure('Position', [100, 100, 1200, 800]);
-                for ibatch = 1:dl.batchsize
+                for ibatch = 1:obj.num_displays
                     clf;
                     specvec = (1:size(spectra_batch, 1))';
                     plot(specvec, spectra_batch(:, ibatch)); hold on;
@@ -131,14 +132,20 @@ classdef Scheduler < handle
                     ylabel('spectrum');
                     title(filename);
                     legend('label', 'model', 'optimization');
-                    print(fullfile(obj.resultpath, filename, ['val_', num2str(ibatch), '.png']), '-dpng')
+                    print(fullfile(obj.resultpath, filename,...
+                        ['val_', num2str(ibatch), '.pdf']), '-dpdf', '-bestfit')
+                    pause(.1)
                 end
                 % loss
                 model_loss = mean(sum((model_spectra - spectra_batch).^2, 1));
                 opt_loss = mean(sum((opt_spectra - spectra_batch).^2, 1));
                 fprintf('average sum loss of model is %2.4f\n', model_loss);
                 fprintf('average sum loss of optimization is %2.4f\n', opt_loss);
-                save(fullfile(obj.resultpath, filename, 'validation.mat'), 'model_loss', 'opt_loss');
+                model_inference_time_per_image = model_time / obj.num_vals;
+                optimization_time_per_image = opt_time / obj.num_vals;
+                save(fullfile(obj.resultpath, filename, 'validation.mat'),...
+                    'model_loss', 'opt_loss', 'model_inference_time_per_image',...
+                    'optimization_time_per_image');
                 
             end
         end

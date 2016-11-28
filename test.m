@@ -19,3 +19,8 @@ dl = DataLoader(filename);
 
 cm = CaffeModel('cnn-multiple', dl);
 cm.train();
+
+%%
+
+corr = dl.getCorr(50);
+plot(1:length(corr), corr);

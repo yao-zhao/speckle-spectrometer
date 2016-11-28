@@ -3,7 +3,7 @@ classdef DataLoader < handle
     %   Detailed explanation goes here
     
     properties
-        T % transimission matrix
+        T % transimission matrix, first dimension is numwavelength, next dimension is numpixels
         name % file label
         savepath = 'result'% path for saving result
     end
@@ -76,6 +76,29 @@ classdef DataLoader < handle
                     error('unrecognized spectra option');
             end
                 
+        end
+        
+        % show correlation plot
+        function corr = getCorr(obj, maxspan)
+            numW = size(obj.T, 1);
+            numP = size(obj.T, 2);
+            maxspan = min([numW-1, maxspan]);
+            corr = zeros(maxspan, 1);
+            m = obj.T;
+            mm = mean(m, 1);
+            m = m - ones(numW, 1)*mm;
+            for span = 1:maxspan
+                numspans = numW-span;
+                ab = zeros(1, numP);
+                a2 = zeros(1, numP);
+                b2 = zeros(1, numP);
+                for inum = 1:numspans
+                    ab = ab + m(inum, :).*m(inum+span,:);
+                    a2 = a2 + m(inum, :).^2;
+                    b2 = b2 + m(inum+span,:).^2;
+                end
+                corr(span) = mean(ab./sqrt(a2)./sqrt(b2));
+            end
         end
         
     end

@@ -9,9 +9,12 @@ classdef Scheduler < handle
         modelnames
         savenames
         numoutputs
+        % path parameter
         datapath = 'data'
         modelpath = 'models'
         resultpath = 'results'
+        % validation parameter
+        num_vals = 32;
     end
     
     methods
@@ -65,8 +68,11 @@ classdef Scheduler < handle
                     else
                         cm.train()
                         copyfile(fullfile(obj.modelpath, cm_names{im},...
-                            'stage_0_final_0.caffemodel'),...
+                            ['stage_0_iter_', num2str(cm.solver.max_iter()), '.caffemodel']),...
                             fullfile(foldername, 'trained.caffemodel'))
+                        %                         copyfile(fullfile(obj.modelpath, cm_names{im},...
+                        %                             ['stage_0_iter_', num2str(cm.solver.max_iter()), '.solverstate']),...
+                        %                             fullfile(foldername, 'trained.solverstate'))
                     end
                     cm.save(foldername)
                     display('initialization passed')
@@ -76,7 +82,66 @@ classdef Scheduler < handle
             end
         end
         
-        % validation 
+        % validation
+        function validate(obj)
+            files = dir(obj.resultpath);
+            files = files([files.isdir]);
+            files = files(3:end);
+            caffe.reset_all();
+            caffe.set_mode_gpu();
+            caffe.set_device(0);
+            for ifile = 1:length(files)
+                filename = files(ifile).name;
+                display(['validate trained model in ', filename]);
+                % load data and model
+                traindata = load(fullfile(obj.resultpath, filename, 'training.mat'));
+                dl = traindata.dataloader;
+                dl.batchsize = obj.num_vals;
+                net = caffe.Net(fullfile(obj.modelpath, ....
+                    traindata.modelname, 'deploy_0.prototxt'), ...
+                    fullfile(obj.resultpath, filename, 'trained.caffemodel'), ...
+                    'test');
+                [img_batch, spectra_batch] = dl.getBatch();
+                % model inference
+                model_spectra = zeros(size(spectra_batch));
+                tstart = tic;
+                for ibatch = 1:dl.batchsize
+                    % net inference
+                    net.blobs('data').set_data(img_batch(:, :, :, ibatch));
+                    net.forward_prefilled();
+                    model_spectra(:, ibatch) =...
+                        double(net.blobs(net.outputs{1}).get_data());
+                end
+                model_time = toc(tstart);
+                fprintf('model inference time of batch size %d is %2.4f\n', dl.batchsize, model_time);
+                % opt inference
+                om = OptModel(dl.T);
+                [opt_spectra, opt_time] = om.inference(img_batch);
+                fprintf('optimization time of batch size %d is %2.4f\n', dl.batchsize, opt_time);
+                % plot
+                close all;
+                figure('Position', [100, 100, 1200, 800]);
+                for ibatch = 1:dl.batchsize
+                    clf;
+                    specvec = (1:size(spectra_batch, 1))';
+                    plot(specvec, spectra_batch(:, ibatch)); hold on;
+                    plot(specvec, model_spectra(:, ibatch)); hold on;
+                    plot(specvec, opt_spectra(:, ibatch)); hold on;
+                    xlabel('wavelength');
+                    ylabel('spectrum');
+                    title(filename);
+                    legend('label', 'model', 'optimization');
+                    print(fullfile(obj.resultpath, filename, ['val_', num2str(ibatch), '.png']), '-dpng')
+                end
+                % loss
+                model_loss = mean(sum((model_spectra - spectra_batch).^2, 1));
+                opt_loss = mean(sum((opt_spectra - spectra_batch).^2, 1));
+                fprintf('average sum loss of model is %2.4f\n', model_loss);
+                fprintf('average sum loss of optimization is %2.4f\n', opt_loss);
+                save(fullfile(obj.resultpath, filename, 'validation.mat'), 'model_loss', 'opt_loss');
+                
+            end
+        end
         
     end
     

@@ -21,5 +21,5 @@ done
 /home/yz/caffe3/build/tools/caffe train -gpu $GPU \
 --solver=models/fc-401/solver_0.prototxt \
 2>&1 | tee models/fc-401/log_$REPEAT.txt
-cp models/fc-401/stage_0_iter_6000.caffemodel \
+cp models/fc-401/stage_0_iter_60.caffemodel \
 models/fc-401/stage_0_final_$REPEAT.caffemodel

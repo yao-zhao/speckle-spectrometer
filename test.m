@@ -1,6 +1,5 @@
 % load all transmission matrix
-clear all
-close all;
+
 datapath = 'data';
 files = dir(fullfile(datapath, '*.mat'));
 filenames = {files.name};
@@ -10,12 +9,12 @@ for ifile = 1%:length(filenames)
     load_data = load(filename);
     T = load_data.T;
 end
-%% try get batch
+% try get batch
 dl = DataLoader(filename);
 [img_batch, spectra_batch] = dl.getBatch();
-%% try training
+% try training
 cm = CaffeModel('fc-121', dl);
-cm.train();
+% cm.train();
 
 %% try correlation
 corr = dl.getCorr(50);
@@ -40,5 +39,6 @@ clc;
 sch = Scheduler();
 sch.train(0)
 
-
+%%
+sch.validate()
 

@@ -1,5 +1,5 @@
 classdef CaffeModel < handle
-    % Hold models for fitting
+    % Hold models for training
     
     properties
         modelpath = 'models'
@@ -31,7 +31,8 @@ classdef CaffeModel < handle
         function train(obj)
             loss = zeros(obj.totaliter, 1);
             tstart = tic;
-            for iter = 1:obj.totaliter
+            while obj.solver.iter() < obj.solver.max_iter()
+                iter = obj.solver.iter()+1;
                 [ img_batch, spectra_batch ] = obj.dataloader.getBatch();
                 % load data
                 obj.solver.net.blobs('data').set_data(img_batch);
@@ -45,6 +46,8 @@ classdef CaffeModel < handle
                     display(['iteration ', num2str(iter), ' loss ', num2str(loss(iter))]);
                 end
             end
+            % save
+            obj.solver.snapshot();
             obj.training_time = toc(tstart);
             obj.losses = loss;
         end
@@ -60,6 +63,13 @@ classdef CaffeModel < handle
             obj.solver.step(1);
             % get result
             double(obj.solver.net.blobs('loss').get_data());
+            % save
+            obj.solver.snapshot();
+        end
+        
+        % load from net
+        function loadNet(obj, savename)
+            obj.solver.net.copy_from(fullfile('results',savename,'trained.caffemodel'));
         end
         
         % function output
@@ -67,7 +77,9 @@ classdef CaffeModel < handle
             losses = obj.losses;
             training_time = obj.training_time;
             dataloader = obj.dataloader;
-            save(fullfile(savepath, 'training.mat'), 'losses', 'training_time', 'dataloader');
+            modelname = obj.name;
+            save(fullfile(savepath, 'training.mat'),...
+                'losses', 'training_time', 'dataloader', 'modelname');
         end
     end
     

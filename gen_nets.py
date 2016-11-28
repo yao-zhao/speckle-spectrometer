@@ -16,8 +16,8 @@ def net0(n, final_output):
     n.add_euclidean(name='')
     n.add_solver_sdg(test_interval = 1e5, test_iter = 1, iter_size = 1,
                 max_iter = 6e3, base_lr = 0.01, momentum = 0.9,
-                weight_decay = 1e-4, gamma = 0.1, stepsize = 2e3,
-                display = 10, snapshot = 5e3)
+                weight_decay = 1e-2, gamma = 0.1, stepsize = 2e3,
+                display = 10, snapshot = 100e3)
 
 # net 1
 def net1(n):
@@ -36,8 +36,8 @@ def net1(n):
     n.add_euclidean(name='')
     n.add_solver_sdg(test_interval = 1e5, test_iter = 1, iter_size = 1,
                 max_iter = 6e3, base_lr = 0.01, momentum = 0.9,
-                weight_decay = 1e-4, gamma = 0.1, stepsize = 2e3,
-                display = 10, snapshot = 5e3)
+                weight_decay = 1e-2, gamma = 0.1, stepsize = 2e3,
+                display = 10, snapshot = 100e3)
 
 for final_output in [121, 401, 1001]:
     net = b.BuildNet(lambda n: net0(n, final_output=final_output),

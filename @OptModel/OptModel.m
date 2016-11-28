@@ -6,6 +6,7 @@ classdef OptModel < handle
         numPix
         numSpec
         method
+        lambda = 1e-2;
     end
     
     properties (Constant)

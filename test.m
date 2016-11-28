@@ -38,7 +38,7 @@ clear all;
 close all;
 clc;
 sch = Scheduler();
-sch.train(1)
+sch.train(0)
 
 
 

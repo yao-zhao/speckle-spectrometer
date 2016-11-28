@@ -66,7 +66,8 @@ classdef CaffeModel < handle
         function save(obj, savepath)
             losses = obj.losses;
             training_time = obj.training_time;
-            save(fullfile(savepath, 'training.mat'), 'losses', 'training_time');
+            dataloader = obj.dataloader;
+            save(fullfile(savepath, 'training.mat'), 'losses', 'training_time', 'dataloader');
         end
     end
     

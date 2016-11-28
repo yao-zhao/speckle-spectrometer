@@ -64,6 +64,9 @@ classdef Scheduler < handle
                         cm.test_initialization();
                     else
                         cm.train()
+                        copyfile(fullfile(obj.modelpath, cm_names{im},...
+                            'stage_0_final_0.caffemodel'),...
+                            fullfile(foldername, 'trained.caffemodel'))
                     end
                     cm.save(foldername)
                     display('initialization passed')
@@ -73,6 +76,7 @@ classdef Scheduler < handle
             end
         end
         
+        % validation 
         
     end
     

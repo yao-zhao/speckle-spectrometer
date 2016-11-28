@@ -9,7 +9,7 @@ lr_policy: "step"
 gamma: 0.1
 momentum: 0.9
 weight_decay: 0.0001
-stepsize: 20000
+stepsize: 2000
 snapshot: 5000
 snapshot_prefix: "models/conv_11x16_3x24_3x32_3x40_3x48_fc-121/stage_0"
 solver_mode: GPU

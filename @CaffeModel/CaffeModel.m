@@ -2,7 +2,7 @@ classdef CaffeModel < handle
     % Hold models for fitting
     
     properties
-        modelpath = 'model'
+        modelpath = 'models'
         name
         dataloader
         % training parameters
@@ -20,7 +20,7 @@ classdef CaffeModel < handle
             caffe.reset_all();
             caffe.set_mode_gpu();
             caffe.set_device(0);
-            obj.solver = caffe.Solver(fullfile(obj.modelpath, obj.name, 'solver.prototxt'));
+            obj.solver = caffe.Solver(fullfile(obj.modelpath, obj.name, 'solver_0.prototxt'));
             obj.totaliter = obj.solver.max_iter();
             obj.dataloader = dataloader;
         end

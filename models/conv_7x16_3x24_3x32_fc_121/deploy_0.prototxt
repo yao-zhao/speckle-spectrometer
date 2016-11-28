@@ -1,0 +1,80 @@
+name: "conv_7x16_3x24_3x32_fc_121"
+layer {
+  name: "Input1"
+  type: "Input"
+  top: "Input1"
+  input_param {
+    shape {
+      dim: 1
+      dim: 1
+      dim: 2101
+      dim: 1
+    }
+  }
+}
+layer {
+  name: "Convolution1"
+  type: "Convolution"
+  bottom: "Input1"
+  top: "Convolution1"
+  convolution_param {
+    num_output: 16
+    bias_term: true
+    pad: 3
+    kernel_size: 7
+    stride: 2
+  }
+}
+layer {
+  name: "ReLU1"
+  type: "ReLU"
+  bottom: "Convolution1"
+  top: "Convolution1"
+}
+layer {
+  name: "Convolution2"
+  type: "Convolution"
+  bottom: "Convolution1"
+  top: "Convolution2"
+  convolution_param {
+    num_output: 24
+    bias_term: true
+    pad: 1
+    kernel_size: 3
+    stride: 1
+  }
+}
+layer {
+  name: "ReLU2"
+  type: "ReLU"
+  bottom: "Convolution2"
+  top: "Convolution2"
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "Convolution2"
+  top: "conv1"
+  convolution_param {
+    num_output: 32
+    bias_term: true
+    pad: 1
+    kernel_size: 3
+    stride: 1
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "conv1"
+  top: "conv1"
+}
+layer {
+  name: "fc1"
+  type: "InnerProduct"
+  bottom: "conv1"
+  top: "fc1"
+  inner_product_param {
+    num_output: 121
+  }
+}

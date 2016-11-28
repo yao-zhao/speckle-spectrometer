@@ -7,9 +7,11 @@ classdef Scheduler < handle
         filenames
         compatiblemodels
         modelnames
+        savenames
         numoutputs
         datapath = 'data'
         modelpath = 'models'
+        resultpath = 'results'
     end
     
     methods
@@ -38,26 +40,39 @@ classdef Scheduler < handle
             end
         end
         
-        % train all models
-        function train(obj)
+        % test initialization traning of all models
+        function train(obj, is_test)
             numFiles = length(obj.filenames);
             expcounter = 1;
+            obj.savenames = [];
             display('Preview Experiments and Test loading ----------------------------------');
             for ifile = 1:numFiles
                 filename = fullfile(obj.datapath, obj.filenames{ifile});
                 dl = DataLoader(filename);
                 cm_names = obj.compatiblemodels{ifile};
+                dlsavename = dl.getSaveName();
                 for im = 1:length(cm_names)
                     display(['experiment No. ', num2str(expcounter)])
                     display(['transmission matrix name: ', filename])
                     display(['model name: ', cm_names{im}])
+                    display(['save name: ', dlsavename, cm_names{im}])
+                    foldername = fullfile(obj.resultpath, [dlsavename, cm_names{im}]);
+                    mkdir(foldername);
+                    obj.savenames = [obj.savenames, {foldername}];
                     cm = CaffeModel(cm_names{im}, dl);
-                    cm.test_initialization();
+                    if is_test
+                        cm.test_initialization();
+                    else
+                        cm.train()
+                    end
+                    cm.save(foldername)
                     display('initialization passed')
+                    fprintf('\n');
                     expcounter = expcounter + 1;
                 end
             end
         end
+        
         
     end
     

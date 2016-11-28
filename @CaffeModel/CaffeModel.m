@@ -8,7 +8,9 @@ classdef CaffeModel < handle
         % training parameters
         solver
         totaliter = 100
+        % result
         losses
+        training_time
     end
     
     methods
@@ -28,6 +30,7 @@ classdef CaffeModel < handle
         % function train
         function train(obj)
             loss = zeros(obj.totaliter, 1);
+            tstart = tic;
             for iter = 1:obj.totaliter
                 [ img_batch, spectra_batch ] = obj.dataloader.getBatch();
                 % load data
@@ -42,6 +45,7 @@ classdef CaffeModel < handle
                     display(['iteration ', num2str(iter), ' loss ', num2str(loss(iter))]);
                 end
             end
+            obj.training_time = toc(tstart);
             obj.losses = loss;
         end
         
@@ -59,6 +63,11 @@ classdef CaffeModel < handle
         end
         
         % function output
+        function save(obj, savepath)
+            losses = obj.losses;
+            training_time = obj.training_time;
+            save(fullfile(savepath, 'training.mat'), 'losses', 'training_time');
+        end
     end
     
 end

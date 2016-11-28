@@ -16,7 +16,8 @@ classdef DataLoader < handle
         noise_option
         batchsize = 256 % batchsize
         % noise parameter
-        gaussian_noise = 1e-3 % gaussian noise
+        gaussian_noise_ratio = 1e-3 % gaussian noise
+        gaussian_noise
         shot_noise = 0 % shot noise
         % multi splectra parameter
         numlines = 3 % number of lines
@@ -38,7 +39,7 @@ classdef DataLoader < handle
             obj.savepath = fullfile(savepath, obj.name);
             obj.noise_option = obj.noise_options{1};
             obj.spectra_option = obj.spectra_options{2};
-            obj.gaussian_noise = mean(obj.T(:)) * obj.gaussian_noise;
+            obj.gaussian_noise = mean(obj.T(:)) * obj.gaussian_noise_ratio;
         end
         
         % get spectra
@@ -67,8 +68,8 @@ classdef DataLoader < handle
         end
         
         % get name
-        function name = getName(obj)
-            name = [];
+        function name = getSaveName(obj)
+            name = [obj.name, '-'];
             switch lower(obj.spectra_option)
                 case obj.spectra_options{1}
                     name = [name, 'singleline'];
@@ -76,11 +77,22 @@ classdef DataLoader < handle
                     name = [name, 'multiline_',num2str(obj.numlines)];
                 case obj.spectra_options{3}
                     error('not implemented')
-                    %                     [ img_batch, spectra_batch ] = getContinuousSpectra(obj);
+                    %[ img_batch, spectra_batch ] = getContinuousSpectra(obj);
                 otherwise
                     error('unrecognized spectra option');
             end
-            
+            name = [name, '-'];
+            switch lower(obj.noise_option)
+                case obj.noise_options{1}
+                    name = [name, 'gaussian_',num2str(obj.gaussian_noise_ratio)];
+                case obj.noise_options{2}
+                    error('not implemented')
+                case obj.noise_options{3}
+                    error('not implemented')
+                otherwise
+                    error('unrecognized noise option');
+            end
+            name = [name, '-'];
         end
         
         % show correlation plot

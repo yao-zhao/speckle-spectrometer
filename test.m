@@ -23,12 +23,13 @@ plot(1:length(corr), corr);
 
 %%
 dl = DataLoader(filename);
+dl.batchsize = 16;
 [img_batch, spectra_batch] = dl.getBatch();
 I = (img_batch(1,:,1,1));
 Sl = spectra_batch(:, 1);
 om = OptModel(dl.T);
 Sp = om.fitSpectra(I);
-
+[s, t] = om.inference(img_batch);
 plot(1:length(Sl), Sl, 1:length(Sp), Sp);
 
 

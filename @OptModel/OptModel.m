@@ -3,6 +3,8 @@ classdef OptModel < handle
     
     properties
         T
+        numPix
+        numSpec
         method
     end
     
@@ -14,11 +16,25 @@ classdef OptModel < handle
         % constructor
         function obj = OptModel(T)
             obj.T = T;
+            obj.numPix = size(T, 1);
+            obj.numSpec = size(T, 2);
             obj.method = obj.method_options{3};
         end
         
         % fit spectra
         sp = fitSpectra(obj, I)
+        
+        % inference
+        function [spectra, time] = inference(obj, I)
+            tic;
+            numbatch = size(I,4);
+            spectra = zeros(obj.numSpec, numbatch);
+            for ibatch = 1:numbatch
+                spectra(:, ibatch) = obj.fitSpectra(I(1, :, 1, ibatch));
+            end
+            time = toc;
+        end
+        
     end
 
     methods (Access = protected)

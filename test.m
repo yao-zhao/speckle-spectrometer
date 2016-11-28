@@ -14,7 +14,7 @@ end
 dl = DataLoader(filename);
 [img_batch, spectra_batch] = dl.getBatch();
 %% try training
-cm = CaffeModel('cnn-multiple', dl);
+cm = CaffeModel('fc-121', dl);
 cm.train();
 
 %% try correlation
@@ -33,7 +33,12 @@ Sp = om.fitSpectra(I);
 plot(1:length(Sl), Sl, 1:length(Sp), Sp);
 
 
-
+%%
+clear all;
+close all;
+clc;
+sch = Scheduler();
+sch.train()
 
 
 

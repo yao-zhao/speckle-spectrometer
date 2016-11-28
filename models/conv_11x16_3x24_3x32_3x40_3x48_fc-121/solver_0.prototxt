@@ -1,5 +1,5 @@
-train_net: "models/conv_7x16_3x24_3x32_fc-401/train_0.prototxt"
-test_net: "models/conv_7x16_3x24_3x32_fc-401/test_0.prototxt"
+train_net: "models/conv_11x16_3x24_3x32_3x40_3x48_fc-121/train_0.prototxt"
+test_net: "models/conv_11x16_3x24_3x32_3x40_3x48_fc-121/test_0.prototxt"
 test_iter: 1
 test_interval: 100000
 base_lr: 0.01
@@ -11,7 +11,7 @@ momentum: 0.9
 weight_decay: 0.0001
 stepsize: 20000
 snapshot: 5000
-snapshot_prefix: "models/conv_7x16_3x24_3x32_fc-401/stage_0"
+snapshot_prefix: "models/conv_11x16_3x24_3x32_3x40_3x48_fc-121/stage_0"
 solver_mode: GPU
 test_initialization: false
 iter_size: 1

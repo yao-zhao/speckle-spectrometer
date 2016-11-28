@@ -1,8 +1,8 @@
 name: "fc-1001"
 layer {
-  name: "Input1"
+  name: "data"
   type: "Input"
-  top: "Input1"
+  top: "data"
   input_param {
     shape {
       dim: 256
@@ -13,9 +13,20 @@ layer {
   }
 }
 layer {
+  name: "label"
+  type: "Input"
+  top: "label"
+  input_param {
+    shape {
+      dim: 256
+      dim: 1001
+    }
+  }
+}
+layer {
   name: "fc1"
   type: "InnerProduct"
-  bottom: "Input1"
+  bottom: "data"
   top: "fc1"
   param {
     lr_mult: 1
@@ -35,21 +46,10 @@ layer {
   }
 }
 layer {
-  name: "Input2"
-  type: "Input"
-  top: "Input2"
-  input_param {
-    shape {
-      dim: 256
-      dim: 1001
-    }
-  }
-}
-layer {
-  name: "euclideanloss"
+  name: "loss"
   type: "EuclideanLoss"
   bottom: "fc1"
-  bottom: "Input2"
-  top: "euclideanloss"
+  bottom: "label"
+  top: "loss"
   loss_weight: 1
 }

@@ -45,6 +45,19 @@ classdef CaffeModel < handle
             obj.losses = loss;
         end
         
+        
+        % function train
+        function test_initialization(obj)
+            [ img_batch, spectra_batch ] = obj.dataloader.getBatch();
+            % load data
+            obj.solver.net.blobs('data').set_data(img_batch);
+            obj.solver.net.blobs('label').set_data(spectra_batch);
+            % step 1
+            obj.solver.step(1);
+            % get result
+            double(obj.solver.net.blobs('loss').get_data());
+        end
+        
         % function output
     end
     

@@ -6,8 +6,10 @@ classdef DataLoader < handle
         T % transimission matrix, first dimension is numwavelength, next dimension is numpixels
         name % file label
         savepath = 'result'% path for saving result
+        numPix
+        numSpec
     end
-
+    
     properties
         % general parameter
         spectra_option
@@ -31,6 +33,8 @@ classdef DataLoader < handle
             [~, obj.name, ~]= fileparts(filename);
             load_data = load(filename);
             obj.T = load_data.T;
+            obj.numPix = size(obj.T, 1);
+            obj.numSpec = size(obj.T, 2);
             obj.savepath = fullfile(savepath, obj.name);
             obj.noise_option = obj.noise_options{1};
             obj.spectra_option = obj.spectra_options{2};
@@ -46,7 +50,7 @@ classdef DataLoader < handle
                     [ img_batch, spectra_batch ] = getMultiSpectra(obj, obj.numlines);
                 case obj.spectra_options{3}
                     error('not implemented')
-%                     [ img_batch, spectra_batch ] = getContinuousSpectra(obj);
+                    %                     [ img_batch, spectra_batch ] = getContinuousSpectra(obj);
                 otherwise
                     error('unrecognized spectra option');
             end
@@ -72,11 +76,11 @@ classdef DataLoader < handle
                     name = [name, 'multiline_',num2str(obj.numlines)];
                 case obj.spectra_options{3}
                     error('not implemented')
-%                     [ img_batch, spectra_batch ] = getContinuousSpectra(obj);
+                    %                     [ img_batch, spectra_batch ] = getContinuousSpectra(obj);
                 otherwise
                     error('unrecognized spectra option');
             end
-                
+            
         end
         
         % show correlation plot
@@ -101,7 +105,7 @@ classdef DataLoader < handle
                 corr(span) = mean(ab./sqrt(a2)./sqrt(b2));
             end
         end
-
+        
         % get pixel correlation plot
         function corr = getPixelCorr(obj, maxspan)
             numP = size(obj.T, 1);
@@ -138,7 +142,7 @@ classdef DataLoader < handle
         % get continous
         [ img_batch, spectra_batch ] = getContinuousSpectra(obj);
         
-
+        
     end
     
 end

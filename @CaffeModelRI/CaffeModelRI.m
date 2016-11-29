@@ -2,7 +2,7 @@ classdef CaffeModelRI < handle
     % Hold models for training
     
     properties
-        modelpath = 'models'
+        modelpath = 'models/group2'
         name
         dataloader
         % training parameters
@@ -10,6 +10,8 @@ classdef CaffeModelRI < handle
         totaliter = 100
         % result
         losses
+        ri_losses
+        spec_losses
         training_time
     end
     
@@ -69,8 +71,8 @@ classdef CaffeModelRI < handle
             % step 1
             obj.solver.step(1);
             % get result
-            double(obj.solver.net.blobs('loss').get_data());
-            % save
+            double(obj.solver.net.blobs('ri_loss').get_data());
+            double(obj.solver.net.blobs('spec_loss').get_data());
             obj.solver.snapshot();
         end
         

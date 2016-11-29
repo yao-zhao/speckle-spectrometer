@@ -47,11 +47,18 @@ addpath('/home/yz/caffe3/matlab');
 datapath = 'data/group2';
 files = dir(fullfile(datapath, '*.mat'));
 filenames = {files.name};
-filename = fullfile(datapath, filenames{1});
+filename = fullfile(datapath, filenames{2});
 % try get batch
 dl = DataLoaderRI(filename);
 [img_batch, spectra_batch, ri_batch] = dl.getBatch();
 %
-cm = CaffeModelRI('group2/conv6_fc-334', dl);
+cm = CaffeModelRI('group2/conv6_fc-34', dl);
 cm.train()
-
+%%
+clear all;
+close all;
+clc;
+sch = SchedulerRI();
+sch.train(0);
+%%
+sch.validate();

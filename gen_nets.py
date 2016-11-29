@@ -159,19 +159,27 @@ def net6(n, final_output, spec_dim = 425, ri_dim = 11):
     n.add_relu()
     n.add_conv_1d(128, stride=2, bias_term=True)
     n.add_relu()
-    n.add_fc(4096)
+    n.add_conv_1d(256, stride=2, bias_term=True)
     n.add_relu()
-    n.add_fc(4096)
+    n.add_conv_1d(512, stride=2, bias_term=True)
     n.add_relu()
     branch1 = n.bottom
+    n.add_fc(512)
+    n.add_relu()
+    n.add_fc(512)
+    n.add_relu()
     n.add_fc(final_output)
     n.add_euclidean(name='spec_', label='label0', loss_weight=1)
     n.bottom = branch1
+    n.add_fc(256)
+    n.add_relu()
+    n.add_fc(256)
+    n.add_relu()
     n.add_fc(ri_dim)
-    n.add_softmax(name='ri_', label='label1', loss_weight=1)
+    n.add_softmax(name='ri_', label='label1', loss_weight=0.1)
     n.add_solver_sdg(test_interval = 1e5, test_iter = 1, iter_size = 1,
-                max_iter = 6e3, base_lr = 0.1, momentum = 0.9,
-                weight_decay = 1e-6, gamma = 0.1, stepsize = 2e3,
+                max_iter = 12e3, base_lr = 0.03, momentum = 0.9,
+                weight_decay = 1e-6, gamma = 0.1, stepsize = 6e3,
                 display = 10, snapshot = 100e3)
 
 
@@ -202,7 +210,7 @@ for final_output in [121, 401, 1001]:
     net.save()
 
     ## second group
-for final_output in [334]:
+for final_output in [34]:
     net = b.BuildNet(lambda n: net6(n, final_output=final_output),
         name = 'group2/conv6_fc-'+str(final_output),
         caffe_path = caffe_path)

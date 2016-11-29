@@ -1,4 +1,4 @@
-name: "group2/conv6_fc-334"
+name: "group2/conv6_fc-34"
 layer {
   name: "data"
   type: "Input"
@@ -57,12 +57,56 @@ layer {
   top: "Convolution2"
 }
 layer {
-  name: "conv1"
+  name: "Convolution3"
   type: "Convolution"
   bottom: "Convolution2"
-  top: "conv1"
+  top: "Convolution3"
   convolution_param {
     num_output: 128
+    bias_term: true
+    pad_h: 1
+    pad_w: 0
+    kernel_h: 3
+    kernel_w: 1
+    stride_h: 2
+    stride_w: 1
+  }
+}
+layer {
+  name: "ReLU3"
+  type: "ReLU"
+  bottom: "Convolution3"
+  top: "Convolution3"
+}
+layer {
+  name: "Convolution4"
+  type: "Convolution"
+  bottom: "Convolution3"
+  top: "Convolution4"
+  convolution_param {
+    num_output: 256
+    bias_term: true
+    pad_h: 1
+    pad_w: 0
+    kernel_h: 3
+    kernel_w: 1
+    stride_h: 2
+    stride_w: 1
+  }
+}
+layer {
+  name: "ReLU4"
+  type: "ReLU"
+  bottom: "Convolution4"
+  top: "Convolution4"
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "Convolution4"
+  top: "conv1"
+  convolution_param {
+    num_output: 512
     bias_term: true
     pad_h: 1
     pad_w: 0
@@ -84,7 +128,7 @@ layer {
   bottom: "conv1"
   top: "fc1"
   inner_product_param {
-    num_output: 4096
+    num_output: 512
   }
 }
 layer {
@@ -99,7 +143,7 @@ layer {
   bottom: "fc1"
   top: "fc2"
   inner_product_param {
-    num_output: 4096
+    num_output: 512
   }
 }
 layer {
@@ -114,14 +158,44 @@ layer {
   bottom: "fc2"
   top: "fc3"
   inner_product_param {
-    num_output: 334
+    num_output: 34
   }
 }
 layer {
   name: "fc4"
   type: "InnerProduct"
-  bottom: "fc2"
+  bottom: "conv1"
   top: "fc4"
+  inner_product_param {
+    num_output: 256
+  }
+}
+layer {
+  name: "relu5"
+  type: "ReLU"
+  bottom: "fc4"
+  top: "fc4"
+}
+layer {
+  name: "fc5"
+  type: "InnerProduct"
+  bottom: "fc4"
+  top: "fc5"
+  inner_product_param {
+    num_output: 256
+  }
+}
+layer {
+  name: "relu6"
+  type: "ReLU"
+  bottom: "fc5"
+  top: "fc5"
+}
+layer {
+  name: "fc6"
+  type: "InnerProduct"
+  bottom: "fc5"
+  top: "fc6"
   inner_product_param {
     num_output: 11
   }
@@ -129,6 +203,6 @@ layer {
 layer {
   name: "ri_prob"
   type: "Softmax"
-  bottom: "fc4"
+  bottom: "fc6"
   top: "ri_prob"
 }

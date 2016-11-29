@@ -41,7 +41,7 @@ classdef SchedulerRI < handle
             obj.compatiblemodels = cell(1, numFiles);
             for ifile = 1:numFiles
                 filename = fullfile(obj.datapath, obj.filenames{ifile});
-                dl = DataLoader(filename);
+                dl = DataLoaderRI(filename);
                 obj.compatiblemodels{ifile} = obj.modelnames(obj.numoutputs == dl.numSpec);
             end
         end
@@ -54,7 +54,7 @@ classdef SchedulerRI < handle
             display('Preview Experiments and Test loading ----------------------------------');
             for ifile = 1:numFiles
                 filename = fullfile(obj.datapath, obj.filenames{ifile});
-                dl = DataLoader(filename);
+                dl = DataLoaderRI(filename);
                 cm_names = obj.compatiblemodels{ifile};
                 dlsavename = dl.getSaveName();
                 for im = 1:length(cm_names)
@@ -69,7 +69,7 @@ classdef SchedulerRI < handle
                     else
                         mkdir(foldername);
                         obj.savenames = [obj.savenames, {foldername}];
-                        cm = CaffeModel(cm_names{im}, dl);
+                        cm = CaffeModelRI(cm_names{im}, dl);
                         if is_test
                             cm.test_initialization();
                         else
@@ -77,9 +77,6 @@ classdef SchedulerRI < handle
                             copyfile(fullfile(obj.modelpath, cm_names{im},...
                                 ['stage_0_iter_', num2str(cm.solver.max_iter()), '.caffemodel']),...
                                 fullfile(foldername, 'trained.caffemodel'))
-                            %                         copyfile(fullfile(obj.modelpath, cm_names{im},...
-                            %                             ['stage_0_iter_', num2str(cm.solver.max_iter()), '.solverstate']),...
-                            %                             fullfile(foldername, 'trained.solverstate'))
                         end
                         cm.save(foldername)
                         display('initialization passed')
@@ -109,9 +106,10 @@ classdef SchedulerRI < handle
                     traindata.modelname, 'deploy_0.prototxt'), ...
                     fullfile(obj.resultpath, filename, 'trained.caffemodel'), ...
                     'test');
-                [img_batch, spectra_batch] = dl.getBatch();
+                [img_batch, spectra_batch, ri_batch] = dl.getBatch();
                 % model inference
                 model_spectra = zeros(size(spectra_batch));
+                model_ri = zeros(dl.numRI, size(ri_batch, 2));
                 tstart = tic;
                 for ibatch = 1:dl.batchsize
                     % net inference
@@ -119,26 +117,33 @@ classdef SchedulerRI < handle
                     net.forward_prefilled();
                     model_spectra(:, ibatch) =...
                         double(net.blobs(net.outputs{1}).get_data());
+                    model_ri(:, ibatch) =...
+                        double(net.blobs(net.outputs{2}).get_data());
                 end
                 model_time = toc(tstart);
                 fprintf('model inference time of batch size %d is %2.4f\n', dl.batchsize, model_time);
-                % opt inference
-                om = OptModel(dl.T);
-                [opt_spectra, opt_time] = om.inference(img_batch);
-                fprintf('optimization time of batch size %d is %2.4f\n', dl.batchsize, opt_time);
                 % plot
                 close all;
-                figure('Position', [100, 100, 1200, 800]);
+                figure('Position', [100, 100, 1600, 800]);
                 for ibatch = 1:obj.num_displays
                     clf;
+                    filename = strrep(filename, '_', ' ');
+                    subplot(1,2,1)
                     specvec = (1:size(spectra_batch, 1))';
                     plot(specvec, spectra_batch(:, ibatch), 'b-o'); hold on;
                     plot(specvec, model_spectra(:, ibatch), 'g-*'); hold on;
-                    plot(specvec, opt_spectra(:, ibatch), 'r-.'); hold on;
                     xlabel('wavelength');
                     ylabel('spectrum');
                     title(filename);
-                    legend('label', 'model', 'optimization');
+                    legend('label', 'model');
+                    subplot(1,2,2)
+                    plot([1, 1] * ri_batch(:, ibatch), [0, 1], 'r-'); hold on;
+                    plot(1:dl.numRI, model_ri(:, ibatch), 'g-*'); hold on;
+                    axis([0, dl.numRI+1, -0.01 1.01])
+                    xlabel('refractive index');
+                    ylabel('probability');
+                    title(filename);
+                    legend('label', 'model');
                     print(fullfile(obj.resultpath, filename,...
                         ['val_', num2str(ibatch), '.pdf']), '-dpdf', '-bestfit')
                     pause(.1)

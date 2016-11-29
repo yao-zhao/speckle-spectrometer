@@ -12,6 +12,10 @@ using CNN for spectrum reconstruction using all fiber spectromter
 - in single line reconstruction, cnn is able to reconstruct sub correlation images with noiseless image
 - in multiple line (5 lines) reconstruction, cnn perform similar to linear reconstruction
 
+# new
+- linear reconstruction does not work well, not nearly as good as optimization
+
+
 # facts
 - noise is about 1e-3 of the whole mean value.
 

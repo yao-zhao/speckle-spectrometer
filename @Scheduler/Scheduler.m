@@ -16,6 +16,8 @@ classdef Scheduler < handle
         % validation parameter
         num_vals = 2;
         num_displays = 2;
+        % training parameter
+        force_train = false;
     end
     
     methods
@@ -61,23 +63,28 @@ classdef Scheduler < handle
                     display(['model name: ', cm_names{im}])
                     display(['save name: ', dlsavename, cm_names{im}])
                     foldername = fullfile(obj.resultpath, [dlsavename, cm_names{im}]);
-                    mkdir(foldername);
-                    obj.savenames = [obj.savenames, {foldername}];
-                    cm = CaffeModel(cm_names{im}, dl);
-                    if is_test
-                        cm.test_initialization();
+                    if exist(fullfile(foldername, 'trained.caffemodel')) && ~obj.force_train
+                        display('result exist, ignore training')
+                        fprintf('\n');
                     else
-                        cm.train()
-                        copyfile(fullfile(obj.modelpath, cm_names{im},...
-                            ['stage_0_iter_', num2str(cm.solver.max_iter()), '.caffemodel']),...
-                            fullfile(foldername, 'trained.caffemodel'))
-                        %                         copyfile(fullfile(obj.modelpath, cm_names{im},...
-                        %                             ['stage_0_iter_', num2str(cm.solver.max_iter()), '.solverstate']),...
-                        %                             fullfile(foldername, 'trained.solverstate'))
+                        mkdir(foldername);
+                        obj.savenames = [obj.savenames, {foldername}];
+                        cm = CaffeModel(cm_names{im}, dl);
+                        if is_test
+                            cm.test_initialization();
+                        else
+                            cm.train()
+                            copyfile(fullfile(obj.modelpath, cm_names{im},...
+                                ['stage_0_iter_', num2str(cm.solver.max_iter()), '.caffemodel']),...
+                                fullfile(foldername, 'trained.caffemodel'))
+                            %                         copyfile(fullfile(obj.modelpath, cm_names{im},...
+                            %                             ['stage_0_iter_', num2str(cm.solver.max_iter()), '.solverstate']),...
+                            %                             fullfile(foldername, 'trained.solverstate'))
+                        end
+                        cm.save(foldername)
+                        display('initialization passed')
+                        fprintf('\n');
                     end
-                    cm.save(foldername)
-                    display('initialization passed')
-                    fprintf('\n');
                     expcounter = expcounter + 1;
                 end
             end

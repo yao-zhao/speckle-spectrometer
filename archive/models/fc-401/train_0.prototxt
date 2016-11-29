@@ -13,9 +13,9 @@ layer {
   }
 }
 layer {
-  name: "label"
+  name: "label0"
   type: "Input"
-  top: "label"
+  top: "label0"
   input_param {
     shape {
       dim: 256
@@ -46,10 +46,16 @@ layer {
   }
 }
 layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "fc1"
+  top: "fc1"
+}
+layer {
   name: "loss"
   type: "EuclideanLoss"
   bottom: "fc1"
-  bottom: "label"
+  bottom: "label0"
   top: "loss"
   loss_weight: 1
 }

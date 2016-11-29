@@ -1,6 +1,6 @@
 % load all transmission matrix
 
-datapath = 'data';
+datapath = 'data/group1';
 files = dir(fullfile(datapath, '*.mat'));
 filenames = {files.name};
 for ifile = 1%:length(filenames)
@@ -41,4 +41,17 @@ sch.train(0)
 
 %%
 sch.validate()
+
+%% test group2
+addpath('/home/yz/caffe3/matlab');
+datapath = 'data/group2';
+files = dir(fullfile(datapath, '*.mat'));
+filenames = {files.name};
+filename = fullfile(datapath, filenames{1});
+% try get batch
+dl = DataLoaderRI(filename);
+[img_batch, spectra_batch, ri_batch] = dl.getBatch();
+%
+cm = CaffeModelRI('group2/conv6_fc-334', dl);
+cm.train()
 

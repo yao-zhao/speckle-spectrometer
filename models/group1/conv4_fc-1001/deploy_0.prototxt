@@ -1,0 +1,169 @@
+name: "group1/conv4_fc-1001"
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 1
+      dim: 1
+      dim: 2101
+      dim: 1
+    }
+  }
+}
+layer {
+  name: "Convolution1"
+  type: "Convolution"
+  bottom: "data"
+  top: "Convolution1"
+  convolution_param {
+    num_output: 32
+    bias_term: true
+    pad_h: 5
+    pad_w: 0
+    kernel_h: 11
+    kernel_w: 1
+    stride_h: 2
+    stride_w: 1
+  }
+}
+layer {
+  name: "ReLU1"
+  type: "ReLU"
+  bottom: "Convolution1"
+  top: "Convolution1"
+}
+layer {
+  name: "Convolution2"
+  type: "Convolution"
+  bottom: "Convolution1"
+  top: "Convolution2"
+  convolution_param {
+    num_output: 64
+    bias_term: true
+    pad_h: 1
+    pad_w: 0
+    kernel_h: 3
+    kernel_w: 1
+    stride_h: 2
+    stride_w: 1
+  }
+}
+layer {
+  name: "ReLU2"
+  type: "ReLU"
+  bottom: "Convolution2"
+  top: "Convolution2"
+}
+layer {
+  name: "Convolution3"
+  type: "Convolution"
+  bottom: "Convolution2"
+  top: "Convolution3"
+  convolution_param {
+    num_output: 128
+    bias_term: true
+    pad_h: 1
+    pad_w: 0
+    kernel_h: 3
+    kernel_w: 1
+    stride_h: 2
+    stride_w: 1
+  }
+}
+layer {
+  name: "ReLU3"
+  type: "ReLU"
+  bottom: "Convolution3"
+  top: "Convolution3"
+}
+layer {
+  name: "Convolution4"
+  type: "Convolution"
+  bottom: "Convolution3"
+  top: "Convolution4"
+  convolution_param {
+    num_output: 256
+    bias_term: true
+    pad_h: 1
+    pad_w: 0
+    kernel_h: 3
+    kernel_w: 1
+    stride_h: 2
+    stride_w: 1
+  }
+}
+layer {
+  name: "ReLU4"
+  type: "ReLU"
+  bottom: "Convolution4"
+  top: "Convolution4"
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "Convolution4"
+  top: "conv1"
+  convolution_param {
+    num_output: 512
+    bias_term: true
+    pad_h: 1
+    pad_w: 0
+    kernel_h: 3
+    kernel_w: 1
+    stride_h: 2
+    stride_w: 1
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "conv1"
+  top: "conv1"
+}
+layer {
+  name: "fc1"
+  type: "InnerProduct"
+  bottom: "conv1"
+  top: "fc1"
+  inner_product_param {
+    num_output: 8192
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "fc1"
+  top: "fc1"
+}
+layer {
+  name: "fc2"
+  type: "InnerProduct"
+  bottom: "fc1"
+  top: "fc2"
+  inner_product_param {
+    num_output: 1024
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "fc2"
+  top: "fc2"
+}
+layer {
+  name: "fc3"
+  type: "InnerProduct"
+  bottom: "fc2"
+  top: "fc3"
+  inner_product_param {
+    num_output: 1001
+  }
+}
+layer {
+  name: "relu4"
+  type: "ReLU"
+  bottom: "fc3"
+  top: "fc3"
+}

@@ -10,9 +10,9 @@ classdef Scheduler < handle
         savenames
         numoutputs
         % path parameter
-        datapath = 'data'
-        modelpath = 'models'
-        resultpath = 'results'
+        datapath = 'data/group1'
+        modelpath = 'models/group1'
+        resultpath = 'results/group1'
         % validation parameter
         num_vals = 2;
         num_displays = 2;

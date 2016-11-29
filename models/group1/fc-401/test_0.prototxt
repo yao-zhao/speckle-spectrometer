@@ -1,0 +1,61 @@
+name: "group1/fc-401"
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 256
+      dim: 1
+      dim: 2101
+      dim: 1
+    }
+  }
+}
+layer {
+  name: "label0"
+  type: "Input"
+  top: "label0"
+  input_param {
+    shape {
+      dim: 256
+      dim: 401
+    }
+  }
+}
+layer {
+  name: "fc1"
+  type: "InnerProduct"
+  bottom: "data"
+  top: "fc1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 1
+  }
+  inner_product_param {
+    num_output: 401
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "fc1"
+  top: "fc1"
+}
+layer {
+  name: "loss"
+  type: "EuclideanLoss"
+  bottom: "fc1"
+  bottom: "label0"
+  top: "loss"
+  loss_weight: 1
+}

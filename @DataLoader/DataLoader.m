@@ -36,7 +36,7 @@ classdef DataLoader < handle
             obj.T = load_data.T;
             obj.numPix = size(obj.T, 1);
             obj.numSpec = size(obj.T, 2);
-            obj.savepath = fullfile(savepath, obj.name);
+            obj.savepath = fullfile(obj.savepath, obj.name);
             obj.noise_option = obj.noise_options{1};
             obj.spectra_option = obj.spectra_options{2};
             obj.gaussian_noise = mean(obj.T(:)) * obj.gaussian_noise_ratio;

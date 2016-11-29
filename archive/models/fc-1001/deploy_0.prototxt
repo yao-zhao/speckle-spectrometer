@@ -21,3 +21,9 @@ layer {
     num_output: 1001
   }
 }
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "fc1"
+  top: "fc1"
+}

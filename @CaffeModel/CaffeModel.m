@@ -2,7 +2,7 @@ classdef CaffeModel < handle
     % Hold models for training
     
     properties
-        modelpath = 'models'
+        modelpath = 'models/group1'
         name
         dataloader
         % training parameters
@@ -35,7 +35,7 @@ classdef CaffeModel < handle
                 [ img_batch, spectra_batch ] = obj.dataloader.getBatch();
                 % load data
                 obj.solver.net.blobs('data').set_data(img_batch);
-                obj.solver.net.blobs('label').set_data(spectra_batch);
+                obj.solver.net.blobs('label0').set_data(spectra_batch);
                 % step 1
                 obj.solver.step(1);
                 % get result
@@ -57,7 +57,7 @@ classdef CaffeModel < handle
             [ img_batch, spectra_batch ] = obj.dataloader.getBatch();
             % load data
             obj.solver.net.blobs('data').set_data(img_batch);
-            obj.solver.net.blobs('label').set_data(spectra_batch);
+            obj.solver.net.blobs('label0').set_data(spectra_batch);
             % step 1
             obj.solver.step(1);
             % get result

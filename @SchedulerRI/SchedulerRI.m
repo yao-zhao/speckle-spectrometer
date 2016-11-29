@@ -14,8 +14,8 @@ classdef SchedulerRI < handle
         modelpath = 'models/group2'
         resultpath = 'results/group2'
         % validation parameter
-        num_vals = 2;
-        num_displays = 2;
+        num_vals = 10;
+        num_displays = 10;
         % training parameter
         force_train = false;
     end
@@ -127,14 +127,14 @@ classdef SchedulerRI < handle
                 figure('Position', [100, 100, 1600, 800]);
                 for ibatch = 1:obj.num_displays
                     clf;
-                    filename = strrep(filename, '_', ' ');
+                    filename1 = strrep(filename, '_', ' ');
                     subplot(1,2,1)
                     specvec = (1:size(spectra_batch, 1))';
                     plot(specvec, spectra_batch(:, ibatch), 'b-o'); hold on;
                     plot(specvec, model_spectra(:, ibatch), 'g-*'); hold on;
                     xlabel('wavelength');
                     ylabel('spectrum');
-                    title(filename);
+                    title(filename1);
                     legend('label', 'model');
                     subplot(1,2,2)
                     plot([1, 1] * ri_batch(:, ibatch), [0, 1], 'r-'); hold on;
@@ -142,7 +142,7 @@ classdef SchedulerRI < handle
                     axis([0, dl.numRI+1, -0.01 1.01])
                     xlabel('refractive index');
                     ylabel('probability');
-                    title(filename);
+                    title(filename1);
                     legend('label', 'model');
                     print(fullfile(obj.resultpath, filename,...
                         ['val_', num2str(ibatch), '.pdf']), '-dpdf', '-bestfit')

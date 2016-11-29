@@ -61,4 +61,5 @@ clc;
 sch = SchedulerRI();
 sch.train(0);
 %%
+sch = SchedulerRI();
 sch.validate();

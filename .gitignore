@@ -3,7 +3,7 @@
 *.solverstate
 *.mat
 *~
-!data/*.mat
+!data/*/*.mat
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

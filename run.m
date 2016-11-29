@@ -1,6 +1,5 @@
 % run experiments
 addpath('/home/yz/caffe3/matlab');
-%%
 clear all;
 close all;
 clc;
@@ -10,5 +9,8 @@ sch.train(0)
 
 
 %%
+addpath('/home/yz/caffe3/matlab');
 sch = Scheduler();
+sch.num_displays = 5;
+sch.num_vals = 5;
 sch.validate()

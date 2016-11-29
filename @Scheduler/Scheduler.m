@@ -132,9 +132,9 @@ classdef Scheduler < handle
                 for ibatch = 1:obj.num_displays
                     clf;
                     specvec = (1:size(spectra_batch, 1))';
-                    plot(specvec, spectra_batch(:, ibatch)); hold on;
-                    plot(specvec, model_spectra(:, ibatch)); hold on;
-                    plot(specvec, opt_spectra(:, ibatch)); hold on;
+                    plot(specvec, spectra_batch(:, ibatch), 'b-o'); hold on;
+                    plot(specvec, model_spectra(:, ibatch), 'g-*'); hold on;
+                    plot(specvec, opt_spectra(:, ibatch), 'r-.'); hold on;
                     xlabel('wavelength');
                     ylabel('spectrum');
                     title(filename);

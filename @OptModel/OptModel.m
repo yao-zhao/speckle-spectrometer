@@ -36,6 +36,11 @@ classdef OptModel < handle
             time = toc;
         end
         
+        % function add noise
+        function add_noise(obj, noise)
+            obj.T = obj.T + noise*randn(size(obj.T));
+        end
+        
     end
 
     methods (Access = protected)

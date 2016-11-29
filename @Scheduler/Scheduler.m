@@ -124,6 +124,7 @@ classdef Scheduler < handle
                 fprintf('model inference time of batch size %d is %2.4f\n', dl.batchsize, model_time);
                 % opt inference
                 om = OptModel(dl.T);
+                om.add_noise(dl.gaussian_noise);
                 [opt_spectra, opt_time] = om.inference(img_batch);
                 fprintf('optimization time of batch size %d is %2.4f\n', dl.batchsize, opt_time);
                 % plot

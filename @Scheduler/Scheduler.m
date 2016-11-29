@@ -137,7 +137,7 @@ classdef Scheduler < handle
                     plot(specvec, opt_spectra(:, ibatch), 'r-.'); hold on;
                     xlabel('wavelength');
                     ylabel('spectrum');
-                    title(filename);
+                    title(strrep(filename, '_', ' '));
                     legend('label', 'model', 'optimization');
                     print(fullfile(obj.resultpath, filename,...
                         ['val_', num2str(ibatch), '.pdf']), '-dpdf', '-bestfit')

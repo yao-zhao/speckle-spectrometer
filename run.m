@@ -28,6 +28,6 @@ sch.train(0)
 %%
 addpath('/home/yz/caffe3/matlab');
 sch = SchedulerRI();
-sch.num_displays = 5;
-sch.num_vals = 5;
+sch.num_displays = 10;
+sch.num_vals = 10;
 sch.validate()

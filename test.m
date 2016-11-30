@@ -61,5 +61,6 @@ clc;
 sch = SchedulerRI();
 sch.train(0);
 %%
+addpath('/home/yz/caffe3/matlab');
 sch = SchedulerRI();
 sch.validate();

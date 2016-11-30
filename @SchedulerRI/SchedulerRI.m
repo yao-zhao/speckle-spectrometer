@@ -151,12 +151,9 @@ classdef SchedulerRI < handle
                 % loss
                 model_loss = mean(sum((model_spectra - spectra_batch).^2, 1));
                 fprintf('average sum loss of model is %2.4f\n', model_loss);
-                fprintf('average sum loss of optimization is %2.4f\n', opt_loss);
                 model_inference_time_per_image = model_time / obj.num_vals;
-                optimization_time_per_image = opt_time / obj.num_vals;
                 save(fullfile(obj.resultpath, filename, 'validation.mat'),...
-                    'model_loss', 'model_inference_time_per_image',...
-                    'optimization_time_per_image');
+                    'model_loss', 'model_inference_time_per_image');
 
             end
         end

@@ -95,13 +95,12 @@ classdef CaffeModelRI < handle
                 'ri_losses', 'spec_losses');
             
             % plot training
-            fg=figure;
+            close all;
             plot(losses);
             xlabel('iteration')
             ylabel('loss')
             title('training loss')
-            print(fullfile(savepath, 'trainingloss.pdf'),'-bestfit',-'pdf')
-            close(fg)
+            print(fullfile(savepath, 'trainingloss.pdf'),'-dpdf','-bestfit')
             
         end
     end

@@ -18,8 +18,9 @@ shift # past argument
 esac
 shift # past argument
 done
+set -e
 /home/yz/caffe3/build/tools/caffe train -gpu $GPU \
---solver=models/group2/conv6_fc-34/solver_0.prototxt \
-2>&1 | tee models/group2/conv6_fc-34/log_$REPEAT.txt
-cp models/group2/conv6_fc-34/stage_0_iter_80000.caffemodel \
-models/group2/conv6_fc-34/stage_0_final_$REPEAT.caffemodel
+--solver=models/group2/conv7_fc-34/solver_checking_0.prototxt \
+2>&1 | tee models/group2/conv7_fc-34/log_checking.txt
+rm models/group2/conv7_fc-34/stage_0_iter_1.*
+set +e

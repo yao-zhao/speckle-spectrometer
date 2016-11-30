@@ -43,7 +43,7 @@ layer {
     lr_mult: 1
   }
   convolution_param {
-    num_output: 32
+    num_output: 64
     bias_term: true
     weight_filler {
       type: "xavier"
@@ -75,7 +75,7 @@ layer {
     lr_mult: 1
   }
   convolution_param {
-    num_output: 64
+    num_output: 128
     bias_term: true
     weight_filler {
       type: "xavier"
@@ -107,7 +107,7 @@ layer {
     lr_mult: 1
   }
   convolution_param {
-    num_output: 128
+    num_output: 256
     bias_term: true
     weight_filler {
       type: "xavier"
@@ -139,7 +139,7 @@ layer {
     lr_mult: 1
   }
   convolution_param {
-    num_output: 256
+    num_output: 512
     bias_term: true
     weight_filler {
       type: "xavier"
@@ -171,7 +171,7 @@ layer {
     lr_mult: 1
   }
   convolution_param {
-    num_output: 512
+    num_output: 1024
     bias_term: true
     weight_filler {
       type: "xavier"
@@ -206,7 +206,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 512
+    num_output: 2048
     weight_filler {
       type: "xavier"
     }
@@ -234,7 +234,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 512
+    num_output: 2048
     weight_filler {
       type: "xavier"
     }
@@ -292,7 +292,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 256
+    num_output: 512
     weight_filler {
       type: "xavier"
     }
@@ -320,7 +320,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 256
+    num_output: 512
     weight_filler {
       type: "xavier"
     }

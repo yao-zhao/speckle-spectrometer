@@ -1,35 +1,13 @@
-name: "group2/conv6_fc-34"
+name: "group2/conv7_fc-34"
 layer {
   name: "data"
   type: "Input"
   top: "data"
   input_param {
     shape {
-      dim: 256
+      dim: 1
       dim: 1
       dim: 425
-      dim: 1
-    }
-  }
-}
-layer {
-  name: "label0"
-  type: "Input"
-  top: "label0"
-  input_param {
-    shape {
-      dim: 256
-      dim: 34
-    }
-  }
-}
-layer {
-  name: "label1"
-  type: "Input"
-  top: "label1"
-  input_param {
-    shape {
-      dim: 256
       dim: 1
     }
   }
@@ -39,19 +17,9 @@ layer {
   type: "Convolution"
   bottom: "data"
   top: "Convolution1"
-  param {
-    lr_mult: 1
-  }
   convolution_param {
     num_output: 64
     bias_term: true
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
     pad_h: 3
     pad_w: 0
     kernel_h: 7
@@ -71,19 +39,9 @@ layer {
   type: "Convolution"
   bottom: "Convolution1"
   top: "Convolution2"
-  param {
-    lr_mult: 1
-  }
   convolution_param {
     num_output: 128
     bias_term: true
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
     pad_h: 1
     pad_w: 0
     kernel_h: 3
@@ -103,19 +61,9 @@ layer {
   type: "Convolution"
   bottom: "Convolution2"
   top: "Convolution3"
-  param {
-    lr_mult: 1
-  }
   convolution_param {
     num_output: 256
     bias_term: true
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
     pad_h: 1
     pad_w: 0
     kernel_h: 3
@@ -135,19 +83,9 @@ layer {
   type: "Convolution"
   bottom: "Convolution3"
   top: "Convolution4"
-  param {
-    lr_mult: 1
-  }
   convolution_param {
     num_output: 512
     bias_term: true
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
     pad_h: 1
     pad_w: 0
     kernel_h: 3
@@ -167,19 +105,9 @@ layer {
   type: "Convolution"
   bottom: "Convolution4"
   top: "conv1"
-  param {
-    lr_mult: 1
-  }
   convolution_param {
     num_output: 1024
     bias_term: true
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
     pad_h: 1
     pad_w: 0
     kernel_h: 3
@@ -199,21 +127,8 @@ layer {
   type: "InnerProduct"
   bottom: "conv1"
   top: "fc1"
-  param {
-    lr_mult: 1
-  }
-  param {
-    lr_mult: 1
-  }
   inner_product_param {
     num_output: 2048
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
   }
 }
 layer {
@@ -227,21 +142,8 @@ layer {
   type: "InnerProduct"
   bottom: "fc1"
   top: "fc2"
-  param {
-    lr_mult: 1
-  }
-  param {
-    lr_mult: 1
-  }
   inner_product_param {
     num_output: 2048
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
   }
 }
 layer {
@@ -255,51 +157,23 @@ layer {
   type: "InnerProduct"
   bottom: "fc2"
   top: "fc3"
-  param {
-    lr_mult: 1
-  }
-  param {
-    lr_mult: 1
-  }
   inner_product_param {
-    num_output: 34
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
+    num_output: 512
   }
 }
 layer {
-  name: "spec_loss"
-  type: "EuclideanLoss"
+  name: "relu4"
+  type: "ReLU"
   bottom: "fc3"
-  bottom: "label0"
-  top: "spec_loss"
-  loss_weight: 1
+  top: "fc3"
 }
 layer {
   name: "fc4"
   type: "InnerProduct"
-  bottom: "conv1"
+  bottom: "fc3"
   top: "fc4"
-  param {
-    lr_mult: 1
-  }
-  param {
-    lr_mult: 1
-  }
   inner_product_param {
     num_output: 512
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
   }
 }
 layer {
@@ -313,66 +187,82 @@ layer {
   type: "InnerProduct"
   bottom: "fc4"
   top: "fc5"
-  param {
-    lr_mult: 1
-  }
-  param {
-    lr_mult: 1
-  }
   inner_product_param {
-    num_output: 512
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
+    num_output: 34
   }
-}
-layer {
-  name: "relu6"
-  type: "ReLU"
-  bottom: "fc5"
-  top: "fc5"
 }
 layer {
   name: "fc6"
   type: "InnerProduct"
-  bottom: "fc5"
+  bottom: "conv1"
   top: "fc6"
-  param {
-    lr_mult: 1
+  inner_product_param {
+    num_output: 1024
   }
-  param {
-    lr_mult: 1
+}
+layer {
+  name: "relu7"
+  type: "ReLU"
+  bottom: "fc6"
+  top: "fc6"
+}
+layer {
+  name: "fc7"
+  type: "InnerProduct"
+  bottom: "fc6"
+  top: "fc7"
+  inner_product_param {
+    num_output: 1024
   }
+}
+layer {
+  name: "relu8"
+  type: "ReLU"
+  bottom: "fc7"
+  top: "fc7"
+}
+layer {
+  name: "fc8"
+  type: "InnerProduct"
+  bottom: "fc7"
+  top: "fc8"
+  inner_product_param {
+    num_output: 256
+  }
+}
+layer {
+  name: "relu9"
+  type: "ReLU"
+  bottom: "fc8"
+  top: "fc8"
+}
+layer {
+  name: "fc9"
+  type: "InnerProduct"
+  bottom: "fc8"
+  top: "fc9"
+  inner_product_param {
+    num_output: 256
+  }
+}
+layer {
+  name: "relu10"
+  type: "ReLU"
+  bottom: "fc9"
+  top: "fc9"
+}
+layer {
+  name: "fc10"
+  type: "InnerProduct"
+  bottom: "fc9"
+  top: "fc10"
   inner_product_param {
     num_output: 11
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
   }
 }
 layer {
-  name: "ri_loss"
-  type: "SoftmaxWithLoss"
-  bottom: "fc6"
-  bottom: "label1"
-  top: "ri_loss"
-  loss_weight: 0.1
-  loss_param {
-    weight_by_label_freqs: false
-  }
-}
-layer {
-  name: "accuracy"
-  type: "Accuracy"
-  bottom: "fc6"
-  bottom: "label1"
-  top: "accuracy"
+  name: "ri_prob"
+  type: "Softmax"
+  bottom: "fc10"
+  top: "ri_prob"
 }

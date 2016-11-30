@@ -1,4 +1,4 @@
-name: "group2/conv6_fc-34"
+name: "group2/conv7_fc-34"
 layer {
   name: "data"
   type: "Input"
@@ -262,7 +262,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 34
+    num_output: 512
     weight_filler {
       type: "xavier"
     }
@@ -273,17 +273,15 @@ layer {
   }
 }
 layer {
-  name: "spec_loss"
-  type: "EuclideanLoss"
+  name: "relu4"
+  type: "ReLU"
   bottom: "fc3"
-  bottom: "label0"
-  top: "spec_loss"
-  loss_weight: 1
+  top: "fc3"
 }
 layer {
   name: "fc4"
   type: "InnerProduct"
-  bottom: "conv1"
+  bottom: "fc3"
   top: "fc4"
   param {
     lr_mult: 1
@@ -320,7 +318,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 512
+    num_output: 34
     weight_filler {
       type: "xavier"
     }
@@ -331,16 +329,130 @@ layer {
   }
 }
 layer {
-  name: "relu6"
-  type: "ReLU"
+  name: "spec_loss"
+  type: "EuclideanLoss"
   bottom: "fc5"
-  top: "fc5"
+  bottom: "label0"
+  top: "spec_loss"
+  loss_weight: 1
 }
 layer {
   name: "fc6"
   type: "InnerProduct"
-  bottom: "fc5"
+  bottom: "conv1"
   top: "fc6"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 1
+  }
+  inner_product_param {
+    num_output: 1024
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu7"
+  type: "ReLU"
+  bottom: "fc6"
+  top: "fc6"
+}
+layer {
+  name: "fc7"
+  type: "InnerProduct"
+  bottom: "fc6"
+  top: "fc7"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 1
+  }
+  inner_product_param {
+    num_output: 1024
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu8"
+  type: "ReLU"
+  bottom: "fc7"
+  top: "fc7"
+}
+layer {
+  name: "fc8"
+  type: "InnerProduct"
+  bottom: "fc7"
+  top: "fc8"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 1
+  }
+  inner_product_param {
+    num_output: 256
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu9"
+  type: "ReLU"
+  bottom: "fc8"
+  top: "fc8"
+}
+layer {
+  name: "fc9"
+  type: "InnerProduct"
+  bottom: "fc8"
+  top: "fc9"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 1
+  }
+  inner_product_param {
+    num_output: 256
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu10"
+  type: "ReLU"
+  bottom: "fc9"
+  top: "fc9"
+}
+layer {
+  name: "fc10"
+  type: "InnerProduct"
+  bottom: "fc9"
+  top: "fc10"
   param {
     lr_mult: 1
   }
@@ -361,7 +473,7 @@ layer {
 layer {
   name: "ri_loss"
   type: "SoftmaxWithLoss"
-  bottom: "fc6"
+  bottom: "fc10"
   bottom: "label1"
   top: "ri_loss"
   loss_weight: 0.1
@@ -372,7 +484,7 @@ layer {
 layer {
   name: "accuracy"
   type: "Accuracy"
-  bottom: "fc6"
+  bottom: "fc10"
   bottom: "label1"
   top: "accuracy"
 }

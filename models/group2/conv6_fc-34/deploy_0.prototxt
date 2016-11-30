@@ -18,7 +18,7 @@ layer {
   bottom: "data"
   top: "Convolution1"
   convolution_param {
-    num_output: 32
+    num_output: 64
     bias_term: true
     pad_h: 3
     pad_w: 0
@@ -40,7 +40,7 @@ layer {
   bottom: "Convolution1"
   top: "Convolution2"
   convolution_param {
-    num_output: 64
+    num_output: 128
     bias_term: true
     pad_h: 1
     pad_w: 0
@@ -62,7 +62,7 @@ layer {
   bottom: "Convolution2"
   top: "Convolution3"
   convolution_param {
-    num_output: 128
+    num_output: 256
     bias_term: true
     pad_h: 1
     pad_w: 0
@@ -84,7 +84,7 @@ layer {
   bottom: "Convolution3"
   top: "Convolution4"
   convolution_param {
-    num_output: 256
+    num_output: 512
     bias_term: true
     pad_h: 1
     pad_w: 0
@@ -106,7 +106,7 @@ layer {
   bottom: "Convolution4"
   top: "conv1"
   convolution_param {
-    num_output: 512
+    num_output: 1024
     bias_term: true
     pad_h: 1
     pad_w: 0
@@ -128,7 +128,7 @@ layer {
   bottom: "conv1"
   top: "fc1"
   inner_product_param {
-    num_output: 512
+    num_output: 2048
   }
 }
 layer {
@@ -143,7 +143,7 @@ layer {
   bottom: "fc1"
   top: "fc2"
   inner_product_param {
-    num_output: 512
+    num_output: 2048
   }
 }
 layer {
@@ -167,7 +167,7 @@ layer {
   bottom: "conv1"
   top: "fc4"
   inner_product_param {
-    num_output: 256
+    num_output: 512
   }
 }
 layer {
@@ -182,7 +182,7 @@ layer {
   bottom: "fc4"
   top: "fc5"
   inner_product_param {
-    num_output: 256
+    num_output: 512
   }
 }
 layer {

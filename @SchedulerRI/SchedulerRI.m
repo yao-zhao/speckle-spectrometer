@@ -138,8 +138,8 @@ classdef SchedulerRI < handle
                     legend('label', 'model');
                     subplot(1,2,2)
                     plot([1, 1] * ri_batch(:, ibatch), [0, 1], 'r-'); hold on;
-                    plot(1:dl.numRI, model_ri(:, ibatch), 'g-*'); hold on;
-                    axis([0, dl.numRI+1, -0.01 1.01])
+                    plot(0:dl.numRI-1, model_ri(:, ibatch), 'g-*'); hold on;
+                    axis([-1, dl.numRI, -0.01 1.01])
                     xlabel('refractive index');
                     ylabel('probability');
                     title(filename1);
@@ -150,15 +150,14 @@ classdef SchedulerRI < handle
                 end
                 % loss
                 model_loss = mean(sum((model_spectra - spectra_batch).^2, 1));
-                opt_loss = mean(sum((opt_spectra - spectra_batch).^2, 1));
                 fprintf('average sum loss of model is %2.4f\n', model_loss);
                 fprintf('average sum loss of optimization is %2.4f\n', opt_loss);
                 model_inference_time_per_image = model_time / obj.num_vals;
                 optimization_time_per_image = opt_time / obj.num_vals;
                 save(fullfile(obj.resultpath, filename, 'validation.mat'),...
-                    'model_loss', 'opt_loss', 'model_inference_time_per_image',...
+                    'model_loss', 'model_inference_time_per_image',...
                     'optimization_time_per_image');
-                
+
             end
         end
         

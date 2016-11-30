@@ -93,6 +93,16 @@ classdef CaffeModelRI < handle
             save(fullfile(savepath, 'training.mat'),...
                 'losses', 'training_time', 'dataloader', 'modelname',...
                 'ri_losses', 'spec_losses');
+            
+            % plot training
+            fg=figure;
+            plot(losses);
+            xlabel('iteration')
+            ylabel('loss')
+            title('training loss')
+            print(fullfile(savepath, 'trainingloss.pdf'),'-bestfit',-'pdf')
+            close(fg)
+            
         end
     end
     

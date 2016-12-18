@@ -1,4 +1,4 @@
-name: "group1/conv4_fc-1001"
+name: "group2/conv8_fc-334_ri-101"
 layer {
   name: "data"
   type: "Input"
@@ -7,7 +7,7 @@ layer {
     shape {
       dim: 1
       dim: 1
-      dim: 2101
+      dim: 425
       dim: 1
     }
   }

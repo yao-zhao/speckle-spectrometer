@@ -9,6 +9,7 @@ classdef SchedulerRI < handle
         modelnames
         savenames
         numoutputs
+        numRIs
         % path parameter
         datapath = 'data/group2'
         modelpath = 'models/group2'
@@ -32,9 +33,14 @@ classdef SchedulerRI < handle
             obj.modelnames = {models.name};
             numModels = length(obj.modelnames);
             obj.numoutputs = zeros(1, numModels);
+            obj.numRIs = zeros(1, numModels);
             for im = 1:numModels
-                tmpsplit = strsplit(obj.modelnames{im}, '-');
-                obj.numoutputs(im) = str2double(tmpsplit(end));
+                out = regexp(obj.modelnames{im}, '_fc-(?<fc>\d+)_ri-(?<ri>\d+)', 'names');
+%                 tmpsplit = strsplit(obj.modelnames{im}, '-');
+                if ~isempty(out)
+                    obj.numoutputs(im) = str2double(out.fc);
+                    obj.numRIs(im) = str2double(out.ri);
+                end
             end
             % find possible models
             numFiles = length(obj.filenames);
@@ -42,7 +48,7 @@ classdef SchedulerRI < handle
             for ifile = 1:numFiles
                 filename = fullfile(obj.datapath, obj.filenames{ifile});
                 dl = DataLoaderRI(filename);
-                obj.compatiblemodels{ifile} = obj.modelnames(obj.numoutputs == dl.numSpec);
+                obj.compatiblemodels{ifile} = obj.modelnames(obj.numoutputs == dl.numSpec & obj.numRIs == dl.numRI);
             end
         end
         

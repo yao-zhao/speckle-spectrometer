@@ -35,10 +35,10 @@ layer {
   }
 }
 layer {
-  name: "Convolution1"
+  name: "conv1"
   type: "Convolution"
   bottom: "data"
-  top: "Convolution1"
+  top: "conv1"
   param {
     lr_mult: 1
   }
@@ -61,16 +61,16 @@ layer {
   }
 }
 layer {
-  name: "ReLU1"
+  name: "relu1"
   type: "ReLU"
-  bottom: "Convolution1"
-  top: "Convolution1"
+  bottom: "conv1"
+  top: "conv1"
 }
 layer {
-  name: "Convolution2"
+  name: "conv2"
   type: "Convolution"
-  bottom: "Convolution1"
-  top: "Convolution2"
+  bottom: "conv1"
+  top: "conv2"
   param {
     lr_mult: 1
   }
@@ -93,16 +93,16 @@ layer {
   }
 }
 layer {
-  name: "ReLU2"
+  name: "relu2"
   type: "ReLU"
-  bottom: "Convolution2"
-  top: "Convolution2"
+  bottom: "conv2"
+  top: "conv2"
 }
 layer {
-  name: "Convolution3"
+  name: "conv3"
   type: "Convolution"
-  bottom: "Convolution2"
-  top: "Convolution3"
+  bottom: "conv2"
+  top: "conv3"
   param {
     lr_mult: 1
   }
@@ -125,16 +125,16 @@ layer {
   }
 }
 layer {
-  name: "ReLU3"
+  name: "relu3"
   type: "ReLU"
-  bottom: "Convolution3"
-  top: "Convolution3"
+  bottom: "conv3"
+  top: "conv3"
 }
 layer {
-  name: "Convolution4"
+  name: "conv4"
   type: "Convolution"
-  bottom: "Convolution3"
-  top: "Convolution4"
+  bottom: "conv3"
+  top: "conv4"
   param {
     lr_mult: 1
   }
@@ -157,16 +157,16 @@ layer {
   }
 }
 layer {
-  name: "ReLU4"
+  name: "relu4"
   type: "ReLU"
-  bottom: "Convolution4"
-  top: "Convolution4"
+  bottom: "conv4"
+  top: "conv4"
 }
 layer {
-  name: "conv1"
+  name: "conv5"
   type: "Convolution"
-  bottom: "Convolution4"
-  top: "conv1"
+  bottom: "conv4"
+  top: "conv5"
   param {
     lr_mult: 1
   }
@@ -189,16 +189,16 @@ layer {
   }
 }
 layer {
-  name: "relu1"
+  name: "relu5"
   type: "ReLU"
-  bottom: "conv1"
-  top: "conv1"
+  bottom: "conv5"
+  top: "conv5"
 }
 layer {
-  name: "fc1"
+  name: "fc6"
   type: "InnerProduct"
-  bottom: "conv1"
-  top: "fc1"
+  bottom: "conv5"
+  top: "fc6"
   param {
     lr_mult: 1
   }
@@ -217,16 +217,16 @@ layer {
   }
 }
 layer {
-  name: "relu2"
+  name: "relu6"
   type: "ReLU"
-  bottom: "fc1"
-  top: "fc1"
+  bottom: "fc6"
+  top: "fc6"
 }
 layer {
-  name: "fc2"
+  name: "fc7"
   type: "InnerProduct"
-  bottom: "fc1"
-  top: "fc2"
+  bottom: "fc6"
+  top: "fc7"
   param {
     lr_mult: 1
   }
@@ -245,16 +245,16 @@ layer {
   }
 }
 layer {
-  name: "relu3"
+  name: "relu7"
   type: "ReLU"
-  bottom: "fc2"
-  top: "fc2"
+  bottom: "fc7"
+  top: "fc7"
 }
 layer {
-  name: "fc3"
+  name: "fc8"
   type: "InnerProduct"
-  bottom: "fc2"
-  top: "fc3"
+  bottom: "fc7"
+  top: "fc8"
   param {
     lr_mult: 1
   }
@@ -275,16 +275,16 @@ layer {
 layer {
   name: "spec_loss"
   type: "EuclideanLoss"
-  bottom: "fc3"
+  bottom: "fc8"
   bottom: "label0"
   top: "spec_loss"
   loss_weight: 1
 }
 layer {
-  name: "fc4"
+  name: "fc9"
   type: "InnerProduct"
-  bottom: "conv1"
-  top: "fc4"
+  bottom: "conv5"
+  top: "fc9"
   param {
     lr_mult: 1
   }
@@ -303,16 +303,16 @@ layer {
   }
 }
 layer {
-  name: "relu5"
+  name: "relu9"
   type: "ReLU"
-  bottom: "fc4"
-  top: "fc4"
+  bottom: "fc9"
+  top: "fc9"
 }
 layer {
-  name: "fc5"
+  name: "fc10"
   type: "InnerProduct"
-  bottom: "fc4"
-  top: "fc5"
+  bottom: "fc9"
+  top: "fc10"
   param {
     lr_mult: 1
   }
@@ -331,16 +331,16 @@ layer {
   }
 }
 layer {
-  name: "relu6"
+  name: "relu10"
   type: "ReLU"
-  bottom: "fc5"
-  top: "fc5"
+  bottom: "fc10"
+  top: "fc10"
 }
 layer {
-  name: "fc6"
+  name: "fc11"
   type: "InnerProduct"
-  bottom: "fc5"
-  top: "fc6"
+  bottom: "fc10"
+  top: "fc11"
   param {
     lr_mult: 1
   }
@@ -359,20 +359,20 @@ layer {
   }
 }
 layer {
-  name: "ri_loss"
+  name: "ri_loss11"
   type: "SoftmaxWithLoss"
-  bottom: "fc6"
+  bottom: "fc11"
   bottom: "label1"
-  top: "ri_loss"
+  top: "ri_loss11"
   loss_weight: 0.1
   loss_param {
     weight_by_label_freqs: false
   }
 }
 layer {
-  name: "accuracy"
+  name: "accuracy11"
   type: "Accuracy"
-  bottom: "fc6"
+  bottom: "fc11"
   bottom: "label1"
-  top: "accuracy"
+  top: "accuracy11"
 }

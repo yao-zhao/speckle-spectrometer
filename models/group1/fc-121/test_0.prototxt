@@ -46,7 +46,7 @@ layer {
   }
 }
 layer {
-  name: "relu2"
+  name: "relu1"
   type: "ReLU"
   bottom: "fc1"
   top: "fc1"

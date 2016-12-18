@@ -1,4 +1,4 @@
-name: "group2/conv7_fc-34"
+name: "group2/conv8_fc-334_ri-101"
 layer {
   name: "data"
   type: "Input"
@@ -19,7 +19,7 @@ layer {
   input_param {
     shape {
       dim: 256
-      dim: 34
+      dim: 334
     }
   }
 }
@@ -30,7 +30,7 @@ layer {
   input_param {
     shape {
       dim: 256
-      dim: 1
+      dim: 101
     }
   }
 }
@@ -318,7 +318,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 34
+    num_output: 334
     weight_filler {
       type: "xavier"
     }
@@ -348,7 +348,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 1024
+    num_output: 2048
     weight_filler {
       type: "xavier"
     }
@@ -376,7 +376,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 1024
+    num_output: 2048
     weight_filler {
       type: "xavier"
     }
@@ -404,7 +404,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 256
+    num_output: 512
     weight_filler {
       type: "xavier"
     }
@@ -432,7 +432,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 256
+    num_output: 512
     weight_filler {
       type: "xavier"
     }
@@ -460,7 +460,7 @@ layer {
     lr_mult: 1
   }
   inner_product_param {
-    num_output: 11
+    num_output: 101
     weight_filler {
       type: "xavier"
     }
@@ -471,20 +471,10 @@ layer {
   }
 }
 layer {
-  name: "ri_loss15"
-  type: "SoftmaxWithLoss"
+  name: "ri_loss"
+  type: "EuclideanLoss"
   bottom: "fc15"
   bottom: "label1"
-  top: "ri_loss15"
-  loss_weight: 0.1
-  loss_param {
-    weight_by_label_freqs: false
-  }
-}
-layer {
-  name: "accuracy15"
-  type: "Accuracy"
-  bottom: "fc15"
-  bottom: "label1"
-  top: "accuracy15"
+  top: "ri_loss"
+  loss_weight: 1
 }

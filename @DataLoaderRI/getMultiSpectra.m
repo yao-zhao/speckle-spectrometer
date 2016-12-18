@@ -14,7 +14,8 @@ batchsize = obj.batchsize;
 [numpix, numspec, numri] = size(T);
 spectra_batch = zeros(numspec, batchsize);
 img_batch = zeros(1, numpix, 1, batchsize);
-ri_batch = zeros(1, batchsize);
+% ri_batch = zeros(1, batchsize);
+ri_batch = zeros(numri, batchsize);
 
 for ibatch = 1:batchsize
     ri = randi(numri);
@@ -25,7 +26,8 @@ for ibatch = 1:batchsize
     img = T(:, :, ri) * spectra;
     spectra_batch(:, ibatch) = spectra;
     img_batch(1, :, 1, ibatch) = img;
-    ri_batch(1, ibatch) = ri-1;
+%     ri_batch(1, ibatch) = ri-1;
+    ri_batch(ri, ibatch) = 1;
 end
 
 end

@@ -94,3 +94,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+
+data/group2/TM_L_10e-3_W_2.1e-6_n_2.86_fine.mat
+data/group2/TM_L_10e-2_W_2.1e-6_n_2.86_fine.mat

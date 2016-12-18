@@ -52,6 +52,7 @@
 
 
 %% group2
+% wave length correlation
 clear all
 close all;
 datapath = 'data/group2';
@@ -78,6 +79,7 @@ ylabel('correlation')
 legend(legends)
 print('results/group2/wavelength_correlations.png', '-dpng')
 %%
+% pixel correlation
 close all;
 legends = [];
 for ifile = 1:length(filenames)
@@ -100,3 +102,27 @@ ylabel('correlation')
 legend(legends)
 print('results/group2/pixel_correlations.png', '-dpng')
 
+%%
+% refractive indices correlation
+close all;
+legends = [];
+for ifile = 1:length(filenames)
+    filename = fullfile(datapath, filenames{ifile});
+    [~, label, ~]= fileparts(filenames{ifile});
+    load_data = load(filename);
+    T = load_data.T;
+    display(['filename', filename]);
+    display(['number of pixels ', num2str(size(T,1))])
+    display(['number of samplings ', num2str(size(T,2))])
+    display(['number of RI ', num2str(size(T,3))])
+    dl = DataLoaderRI(filename);
+    corrW = dl.getRICorr(50);
+    plot(1:length(corrW), corrW);
+    legends = [legends, {strrep(filename, '_', ' ')}];
+    hold on;
+end
+title('refractive index correlation');
+xlabel('refractive index increments')
+ylabel('correlation')
+legend(legends)
+print('results/group2/RI_correlations.png', '-dpng')

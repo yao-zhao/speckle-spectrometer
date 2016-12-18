@@ -140,6 +140,26 @@ classdef DataLoaderRI < handle
             end
         end
         
+        %         get refractive indices correlation plot
+        function corr = getRICorr(obj, maxspan)
+            numP = size(obj.T, 1);
+            numW = size(obj.T, 2);
+            numRI = size(obj.T, 3);
+            maxspan = min([numRI-1, maxspan]);
+            corr = zeros(maxspan, 1);
+            for span = 1:maxspan
+                numspans = numRI-span;
+                ab = zeros(numP, numW);
+                a2 = zeros(numP, numW);
+                b2 = zeros(numP, numW);
+                for inum = 1:numspans
+                    ab = ab + obj.T(:,:,inum).*obj.T(:,:,inum+span);
+                    a2 = a2 + obj.T(:,:,inum).^2;
+                    b2 = b2 + obj.T(:,:,inum+span).^2;
+                end
+                corr(span) = mean(mean(ab./sqrt(a2)./sqrt(b2)));
+            end
+        end
         
     end
     
